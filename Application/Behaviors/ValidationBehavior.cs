@@ -1,0 +1,44 @@
+﻿//using Application.Abstractions.Messaging;
+//using FluentValidation;
+//using MediatR;
+
+//namespace Application.Behaviors;
+
+//public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) 
+//    : IPipelineBehavior<TRequest, TResponse>
+//    where TRequest : class, ICommand<TResponse>
+//{
+//    private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
+
+//    public async Task<TResponse> Handle(
+//        TRequest request,
+//        RequestHandlerDelegate<TResponse> next,
+//        CancellationToken cancellationToken)
+//    {
+//        if (_validators.Any())
+//        {
+//            var context = new ValidationContext<TRequest>(request);
+
+//            var errorsDictionary = _validators
+//                .Select(validator => validator.Validate(context))
+//                .SelectMany(result => result.Errors)
+//                .Where(failure => failure != null)
+//                .GroupBy(
+//                    x => x.PropertyName,
+//                    x => x.ErrorMessage,
+//                    (propertyName, errorMessages) => new
+//                    {
+//                        Key = propertyName,
+//                        Values = errorMessages.Distinct().ToArray()
+//                    })
+//                .ToDictionary(x => x.Key, x => x.Values);
+
+//            if (errorsDictionary.Count != 0)
+//            {
+//                throw new ValidationException(errorsDictionary.Values);
+//            }
+//        }
+
+//        return await next();
+//    }
+//}
